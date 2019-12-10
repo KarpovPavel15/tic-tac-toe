@@ -1,30 +1,50 @@
 import React, {Component} from "react";
-import BtnComponent from "./btnComponent"
+import Section from "./section"
 
 export default class Board extends Component {
-    static returnBtn(i) {
-        return <BtnComponent value={i}/>
+    state = {
+        values: Array(9).fill(null),
+        xNext: true
+    };
+
+    handleClick(i) {
+        const values = this.state.values.slice();
+        if(values[i]==null){
+            values[i] = this.state.xNext ? 'X' : 'O';
+        }
+
+        this.setState({
+            values: values,
+            xNext: !this.state.xNext
+        })
+    }
+
+    returnBtn(i) {
+        return (<Section
+            value={this.state.values[i]}
+            onClick={() => this.handleClick(i)}
+        />)
     }
 
     render() {
-        const status = "next player: X";
+        const status = this.state.xNext ? "next player: X" : "next player: O";
         return (
             <div>
                 <div className="status">{status}</div>
                 <div className="board-line">
-                    {Board.returnBtn(0)}
-                    {Board.returnBtn(1)}
-                    {Board.returnBtn(2)}
+                    {this.returnBtn(0)}
+                    {this.returnBtn(1)}
+                    {this.returnBtn(2)}
                 </div>
                 <div className="board-line">
-                    {Board.returnBtn(3)}
-                    {Board.returnBtn(4)}
-                    {Board.returnBtn(5)}
+                    {this.returnBtn(3)}
+                    {this.returnBtn(4)}
+                    {this.returnBtn(5)}
                 </div>
                 <div className="board-line">
-                    {Board.returnBtn(6)}
-                    {Board.returnBtn(7)}
-                    {Board.returnBtn(8)}
+                    {this.returnBtn(6)}
+                    {this.returnBtn(7)}
+                    {this.returnBtn(8)}
                 </div>
             </div>
         )
